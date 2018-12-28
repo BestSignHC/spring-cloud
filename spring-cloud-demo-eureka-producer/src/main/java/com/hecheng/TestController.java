@@ -10,8 +10,8 @@ public class TestController {
     @Value("${spring.application.name}")
     private String applicationName;
 
-    @RequestMapping("/ping")
+    @RequestMapping("/producer")
     public String pingAction() {
-        return applicationName + " send msg: pong.";
+        return applicationName + " send msg: ." + System.currentTimeMillis();
     }
 }
