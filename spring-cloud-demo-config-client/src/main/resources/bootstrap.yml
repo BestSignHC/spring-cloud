@@ -1,10 +1,11 @@
-spring:
-  cloud:
-    config:
-      uri: http://localhost:8040   # 配置中心的具体地址，即 config-server
-      name: config-client         # 对应 {application} 部分
-      profile: dev                # 对应 {profile} 部分
-      label: master               # 对应 {label} 部分，即 Git 的分支。
+################### 直连config server begin ###########################
+#spring:
+#  cloud:
+#    config:
+#      uri: http://localhost:8040   # 配置中心的具体地址，即 config-server
+#      name: config-client         # 对应 {application} 部分
+#      profile: dev                # 对应 {profile} 部分
+#      label: master               # 对应 {label} 部分，即 Git 的分支。
 
 
 #仓库中的配置文件会被转换成 Web 接口，访问可以参照以下的规则：
@@ -14,3 +15,20 @@ spring:
 #/{label}/{application}-{profile}.yml
 #/{application}-{profile}.properties
 #/{label}/{application}-{profile}.properties
+
+################### 直连config server end   ###########################
+
+################### eureka服务调用config server begin ##################
+spring:
+  cloud:
+    config:
+      name: config-client         # 对应 {application} 部分
+      profile: dev                # 对应 {profile} 部分
+      label: master               # 对应 {label} 部分，即 Git 的分支。
+      discovery:
+        enabled: true
+        service-id: spring-cloud-config-server
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
