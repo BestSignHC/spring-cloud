@@ -22,7 +22,7 @@
 spring:
   cloud:
     config:
-      name: config-client         # 对应 {application} 部分
+      name: mq,database         # 对应 {application} 部分
       profile: dev                # 对应 {profile} 部分
       label: master               # 对应 {label} 部分，即 Git 的分支。
       discovery:
@@ -31,4 +31,4 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: http://hecheng-pc1:8081/eureka/,http://hecheng-pc2:8082/eureka/,http://hecheng-pc3:8083/eureka/

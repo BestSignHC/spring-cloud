@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.hecheng</groupId>
-	<artifactId>spring-cloud-demo-eureka-produce</artifactId>
+	<artifactId>spring-cloud-demo-eureka-producer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>spring-cloud-demo-eureka-produce</name>
+	<name>spring-cloud-demo-eureka-producer</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>

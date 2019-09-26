@@ -15,7 +15,7 @@ public class TestController {
 
     @RequestMapping("/consumer")
     public String consumer() {
-        String url = "http://hc-eureka-producer/ping";
+        String url = "http://hc-eureka-producer/producer";
         return restTemplate.getForObject(url, String.class);
     }
 }

@@ -13,7 +13,7 @@ public class TestConsumerController {
 
     @RequestMapping("/consumer")
     public String consumer() {
-        String response = restTemplate.getForObject("http://HC-EUREKA-CLIENT/ping", String.class);
+        String response = restTemplate.getForObject("http://hecheng-pc1:ping", String.class);
         return response;
     }
 }
