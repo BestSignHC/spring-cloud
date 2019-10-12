@@ -1,0 +1,26 @@
+server:
+  port: 8020
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true  # 是否与服务注册发现组件进行结合，通过serviceId转发到具体的服务实例。默认为 false，设为 true 便开启通过服务中心的自动根据 serviceId 创建路由的功能。
+#      routes:
+#        - id: server_conusmer
+#          uri: lb://HC-CONSUMER-FEIGN-HYSTRIX
+#          order: 0
+#          predicates:
+#            - Path=/c/**
+#          filters:
+#            - StripPrefix=1
+  application:
+    name: cloud-gateway
+logging:
+  level:
+    org.springframework.cloud.gateway: debug
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8081/eureka/
+
