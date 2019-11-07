@@ -1,19 +1,48 @@
 server:
   port: 8020
 spring:
+  redis:
+    host: r-uf66499f08b3bb04.redis.rds.aliyuncs.com
+    port: 6379
+    database: 0
+    password: qvwsm4djF2f5pv7mHs3mKC6S
   cloud:
     gateway:
       discovery:
         locator:
           enabled: true  # 是否与服务注册发现组件进行结合，通过serviceId转发到具体的服务实例。默认为 false，设为 true 便开启通过服务中心的自动根据 serviceId 创建路由的功能。
-#      routes:
-#        - id: server_conusmer
-#          uri: lb://HC-CONSUMER-FEIGN-HYSTRIX
-#          order: 0
-#          predicates:
-#            - Path=/c/**
-#          filters:
-#            - StripPrefix=1
+      default-filters:
+        - Token=true   # Spring会找到TokenGatewayFilterFactory，并且参数Config.isNeedToken=true
+                       # 这个地方有个坑，就是这里定义的全局filter只对配置文件声明的routes有效，用Java Config就不行，，
+        - name: RequestRateLimiter
+          args:
+            key-resolver: '#{@globalPathKeyResolver}'
+            redis-rate-limiter.replenishRate: 5 # 令牌桶每秒填充平均速率
+            redis-rate-limiter.burstCapacity: 8 # 令牌桶总容量 将burstCapacity设得比replenishRate大，以应对临时爆发的流量
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/err
+      routes:
+        - id: server_conusmer
+          uri: lb://HC-CONSUMER-FEIGN-HYSTRIX
+          order: 0
+          predicates:
+            - Path=/c/**
+          filters:
+            - StripPrefix=1
+        - id: server_conusmer_limit
+          uri: lb://HC-CONSUMER-FEIGN-HYSTRIX
+          order: -1
+          predicates:
+            - Path=/cc/**
+          filters:
+            - StripPrefix=1
+            - name: RequestRateLimiter
+              args:
+                key-resolver: '#{@hostAddrKeyResolver}' # 用于限流的键的解析器的 Bean 对象的名字。它使用 SpEL 表达式根据#{@beanName}从 Spring 容器中获取 Bean 对象。
+                redis-rate-limiter.replenishRate: 20 # 令牌桶每秒填充平均速率
+                redis-rate-limiter.burstCapacity: 30 # 令牌桶总容量 将burstCapacity设得比replenishRate大，以应对临时爆发的流量
   application:
     name: cloud-gateway
 logging:
@@ -22,5 +51,14 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8081/eureka/
+      defaultZone: http://192.168.30.190:8081/eureka/
 
+hystrix.command.default.execution.isolation.thread.timeoutInMilliseconds: 60000
+ribbon:
+  ConnectTimeout: 3000
+  ReadTimeout: 60000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

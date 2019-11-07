@@ -10,4 +10,9 @@ public class SpringCloudDemoGatewayApplication {
 		SpringApplication.run(SpringCloudDemoGatewayApplication.class, args);
 	}
 
+//	@Bean(name="hostAddrKeyResolver")
+//	public HostAddrKeyResolver hostAddrKeyResolver() {
+//		return new HostAddrKeyResolver();
+//	}
+
 }

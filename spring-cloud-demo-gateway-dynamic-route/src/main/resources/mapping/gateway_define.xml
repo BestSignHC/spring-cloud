@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://www.mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hecheng.mapper.GatewayDefineMapper">
+    <resultMap id="BaseResultMap" type="com.hecheng.entity.GatewayDefine">
+        <result column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="uri" property="uri"/>
+        <result column="predicates" property="predicates"/>
+        <result column="filters" property="filters"/>
+    </resultMap>
+
+    <insert id="add" parameterType="com.hecheng.entity.GatewayDefine">
+        INSERT INTO
+        `gateway_define`
+        (`id`, `name`, `uri`, `predicates`, `filters`)
+        VALUES
+        (#{id}, #{name}, #{uri}, #{predicates}, #{filters});
+    </insert>
+
+    <select id="findAll" resultMap="BaseResultMap">
+        SELECT * FROM `gateway_define`;
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Object">
+        DELETE FROM `gateway_define` WHERE (`id`=#{id});
+    </delete>
+
+    <select id="findOne" parameterType="java.lang.Object">
+        SELECT * FROM `gateway_define` WHERE `id` = #{id};
+    </select>
+
+</mapper>
