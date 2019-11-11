@@ -18,6 +18,7 @@ import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class MysqlRouteDefineRepository implements RouteDefinitionRepository {
@@ -57,11 +58,15 @@ public class MysqlRouteDefineRepository implements RouteDefinitionRepository {
     public Mono<Void> save(Mono<RouteDefinition> route) {
         return route.flatMap(r -> {
             try {
+                if (null == r.getId() || "".equals(r.getId())) {
+                    r.setId(UUID.randomUUID().toString());
+                }
                 GatewayDefine gatewayDefine = new GatewayDefine();
                 gatewayDefine.setId(r.getId());
                 gatewayDefine.setUri(r.getUri().toString());
                 gatewayDefine.setPredicates(JSON.toJSONString(r.getPredicates()));
                 gatewayDefine.setFilters(JSON.toJSONString(r.getFilters()));
+                gatewayDefine.setName("name");
                 gatewayDefineMapper.add(gatewayDefine);
                 return Mono.empty();
             }

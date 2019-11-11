@@ -1,5 +1,7 @@
 package com.hecheng;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.hecheng.entity.GatewayDefine;
 import com.hecheng.mapper.GatewayDefineMapper;
 import org.junit.Test;
@@ -17,6 +19,13 @@ public class GatewayDefineMapperTest {
     private GatewayDefineMapper mapper;
 
     @Test
+    public void testFindAll() {
+        String s = JSON.toJSONString(mapper.findAll());
+        System.out.println("*******");
+        System.out.println(s);
+        System.out.println("*******");
+    }
+
     public void testInsert() {
         System.out.println("start test jdbc.........");
         GatewayDefine gatewayDefine = new GatewayDefine();
